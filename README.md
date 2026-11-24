@@ -29,11 +29,11 @@ Edita `src/config.ts`:
 
 Los valores iniciales de nombres, fecha, lugar y correo son marcadores de posición. El formulario abre el programa de correo de cada invitado; no almacena ni envía información a un servidor.
 
-Las fotografías de referencia vienen de [Unsplash](https://unsplash.com/license). Para publicar, conviene reemplazarlas por fotografías de la pareja o escoger imágenes que representen a los novios.
+Las fotografías de referencia vienen de [Unsplash](https://unsplash.com/license) y la galería 3D está guardada en `public/images/wedding-gallery/`. Para publicar, conviene reemplazarlas por fotografías de la pareja.
 
 ## Diseño
 
-La dirección visual sigue un enfoque editorial cálido: tonos marfil, verde jardín y terracota, una sola familia tipográfica y movimiento suave. El mundo floral de Three.js usa geometría generada en el navegador, no clips pre-renderizados ni servicios de generación de pago. El movimiento tiene en cuenta la preferencia de movimiento reducido del dispositivo.
+La dirección visual sigue un enfoque editorial cálido: tonos marfil, verde jardín y terracota, una sola familia tipográfica y movimiento suave. La galería toma como referencia el carrusel CSS en perspectiva de `Monkeyxcx/Personal`, con retícula y tipografía superpuesta, adaptado a imágenes de boda. El mundo floral de Three.js usa geometría generada en el navegador, no clips pre-renderizados ni servicios de generación de pago. El movimiento tiene en cuenta la preferencia de movimiento reducido del dispositivo.
 
 ## Publicación
 

@@ -14,4 +14,5 @@ export const photos = {
   hero: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=85',
   story: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1100&q=85',
   dinner: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1100&q=85',
+  gallery: Array.from({ length: 10 }, (_, index) => `/images/wedding-gallery/${String(index + 1).padStart(2, '0')}.jpg`),
 };
