@@ -1,0 +1,250 @@
+---
+import '../styles/global.css';
+import { wedding, photos } from '../config';
+
+const title = `${wedding.names} | Nuestra boda`;
+const description = `Nos casamos. Acompáñanos a celebrar nuestra historia el ${wedding.dateLabel.toLowerCase()}.`;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7f4ed" />
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={photos.hero} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label={`Inicio, ${wedding.names}`}>
+        <span class="brand-mark" aria-hidden="true">{wedding.names.split(' ')[0]?.[0] ?? 'N'}<i>&</i></span>
+        <span class="brand-name">{wedding.names}</span>
+      </a>
+      <nav class="desktop-nav" aria-label="Navegación principal">
+        <a href="#historia">Nuestra historia</a>
+        <a href="#celebracion">La celebración</a>
+        <a class="nav-rsvp" href="#confirmar">Confirmar asistencia <span aria-hidden="true">↗</span></a>
+      </nav>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">
+        <span></span><span></span>
+      </button>
+      <nav class="mobile-menu" id="mobile-menu" aria-label="Navegación móvil" inert>
+        <a href="#historia">Nuestra historia</a>
+        <a href="#celebracion">La celebración</a>
+        <a href="#confirmar">Confirmar asistencia</a>
+      </nav>
+    </header>
+
+    <main id="contenido">
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <div class="hero-photo-wrap">
+          <img class="hero-photo" src={photos.hero} alt="Una pareja celebra su boda al aire libre entre flores" fetchpriority="high" />
+          <div class="hero-shade"></div>
+          <span class="photo-note">Un día para recordar, una vida para compartir</span>
+        </div>
+        <div class="hero-content">
+          <p class="eyebrow"><span class="eyebrow-line"></span> CON MUCHO AMOR, TE INVITAMOS</p>
+          <h1 id="hero-title">Nos casamos<span class="hero-period">.</span></h1>
+          <p class="hero-names">{wedding.names}</p>
+          <p class="hero-intro">Una historia bonita nos trajo hasta aquí. Nos haría muy felices celebrar este nuevo capítulo contigo.</p>
+          <div class="hero-actions">
+            <a class="button button-dark" href="#confirmar">Acompáñanos <span aria-hidden="true">↗</span></a>
+            <a class="text-link" href="#celebracion">Descubre los detalles <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-date"><span class="date-flower" aria-hidden="true">✳</span><span>{wedding.dateLabel}</span><span class="date-rule"></span><span>CONOCE NUESTRA HISTORIA</span></div>
+        </div>
+        <div class="hero-index" aria-hidden="true">01 <span></span> 04</div>
+      </section>
+
+      <section class="intro section-pad" aria-labelledby="intro-title">
+        <div class="intro-top reveal">
+          <p class="eyebrow">EL COMIENZO DE ALGO NUEVO</p>
+          <span class="intro-spark" aria-hidden="true">✳</span>
+        </div>
+        <h2 id="intro-title" class="word-reveal">Hay días que se convierten en recuerdos para toda la vida.</h2>
+        <p class="intro-caption reveal">Este es uno de ellos. Y queremos vivirlo a tu lado.</p>
+        <div class="intro-signature reveal"><span>Con cariño,</span><strong>{wedding.names}</strong></div>
+      </section>
+
+      <section class="world" id="historia" aria-label="Nuestra historia, un viaje en cuatro momentos">
+        <div class="world-stage" aria-hidden="true">
+          <canvas id="wedding-world"></canvas>
+          <div class="world-grain"></div>
+          <span class="world-caption">UN PEQUEÑO UNIVERSO, HECHO DE NOSOTROS</span>
+          <span class="world-progress"><i></i></span>
+        </div>
+        <article class="world-chapter chapter-one" data-chapter="0">
+          <div class="chapter-card reveal">
+            <span class="chapter-number">I · EL ENCUENTRO</span>
+            <h2>Todo empezó con un hola.</h2>
+            <p>Dos caminos distintos, una conversación que se alargó y esa sensación de haber encontrado a alguien que ya se sentía como casa.</p>
+            <span class="chapter-flower" aria-hidden="true">✳</span>
+          </div>
+          <span class="chapter-side-note">CADA HISTORIA TIENE SU PRIMERA PÁGINA</span>
+        </article>
+        <article class="world-chapter chapter-two" data-chapter="1">
+          <div class="chapter-card reveal">
+            <span class="chapter-number">II · NUESTRO CAMINO</span>
+            <h2>Elegirnos, cada día.</h2>
+            <p>Entre viajes, sobremesas y planes improvisados, fuimos construyendo nuestro lugar favorito: estar juntos.</p>
+            <span class="chapter-flower" aria-hidden="true">✳</span>
+          </div>
+          <span class="chapter-side-note">LOS MEJORES MOMENTOS SON COMPARTIDOS</span>
+        </article>
+        <article class="world-chapter chapter-three" data-chapter="2">
+          <div class="chapter-card reveal">
+            <span class="chapter-number">III · LA PROMESA</span>
+            <h2>Y dijimos que sí.</h2>
+            <p>Con ilusión, con calma y con el corazón lleno. Ahora queremos celebrar esta promesa rodeados de las personas que más queremos.</p>
+            <span class="chapter-flower" aria-hidden="true">✳</span>
+          </div>
+          <span class="chapter-side-note">UNA PROMESA PARA TODOS LOS DÍAS</span>
+        </article>
+        <article class="world-chapter chapter-four" data-chapter="3">
+          <div class="chapter-card reveal">
+            <span class="chapter-number">IV · LO QUE VIENE</span>
+            <h2>La próxima página, contigo.</h2>
+            <p>Este día no estaría completo sin ti. Guarda la fecha y prepárate para brindar, bailar y crear recuerdos juntos.</p>
+            <a class="chapter-cta" href="#confirmar">Quiero acompañarlos <span aria-hidden="true">↗</span></a>
+          </div>
+          <span class="chapter-side-note">CONTINUARÁ, CON MUCHO AMOR</span>
+        </article>
+      </section>
+
+      <section class="photo-interlude" aria-label="Un instante de nuestra historia">
+        <div class="photo-interlude-image">
+          <img src={photos.story} alt="Una pareja comparte un momento especial durante su celebración" loading="lazy" />
+        </div>
+        <p class="photo-interlude-note">LO MÁS BONITO ESTÁ POR VENIR <span aria-hidden="true">✳</span></p>
+      </section>
+
+      <section class="celebration section-pad" id="celebracion" aria-labelledby="celebration-title">
+        <div class="celebration-heading reveal">
+          <p class="eyebrow">RESERVA EL DÍA</p>
+          <h2 id="celebration-title">Nos vemos<br />en el altar<span class="hero-period">.</span></h2>
+          <p>Un día especial merece disfrutarse sin prisa. Aquí tienes todo lo que necesitas saber para compartirlo con nosotros.</p>
+        </div>
+        <div class="countdown reveal" aria-label="Cuenta regresiva para la boda" data-date={wedding.dateISO}>
+          <div class="countdown-label"><span class="countdown-star" aria-hidden="true">✳</span> FALTA MUY POCO</div>
+          <div class="countdown-units">
+            <div><strong data-days>—</strong><span>DÍAS</span></div><i>:</i>
+            <div><strong data-hours>—</strong><span>HORAS</span></div><i>:</i>
+            <div><strong data-minutes>—</strong><span>MINUTOS</span></div><i>:</i>
+            <div><strong data-seconds>—</strong><span>SEGUNDOS</span></div>
+          </div>
+          <p class="countdown-foot">{wedding.dateLabel}</p>
+        </div>
+        <div class="event-grid">
+          <article class="event-card event-date reveal">
+            <span class="event-number">01 / CUÁNDO</span>
+            <span class="event-icon" aria-hidden="true">◷</span>
+            <h3>Una fecha para guardar.</h3>
+            <p>{wedding.dateLabel}</p>
+            <button class="quiet-button" type="button" data-calendar>Guardar en mi calendario <span aria-hidden="true">↗</span></button>
+          </article>
+          <article class="event-card event-place reveal">
+            <span class="event-number">02 / DÓNDE</span>
+            <span class="event-icon" aria-hidden="true">⌖</span>
+            <h3>Un lugar para celebrar.</h3>
+            <p>{wedding.venue}{wedding.address && <><br />{wedding.address}</>}</p>
+            <a class="quiet-button" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(wedding.address || wedding.venue)}`} target="_blank" rel="noreferrer">Cómo llegar <span aria-hidden="true">↗</span></a>
+          </article>
+          <article class="event-card event-dress reveal">
+            <span class="event-number">03 / CÓMO VENIR</span>
+            <span class="event-icon" aria-hidden="true">✳</span>
+            <h3>Ven como te sientas mejor.</h3>
+            <p>El código de vestimenta y recomendaciones para el día se compartirán junto con la invitación.</p>
+            <span class="quiet-label">DETALLES PRÓXIMAMENTE</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="faq section-pad" aria-labelledby="faq-title">
+        <div class="faq-heading reveal">
+          <p class="eyebrow">POR SI TE LO PREGUNTABAS</p>
+          <h2 id="faq-title">Un par de<br />detalles más<span class="hero-period">.</span></h2>
+        </div>
+        <div class="faq-list reveal">
+          <details>
+            <summary>¿Cómo confirmo mi asistencia?<span aria-hidden="true">+</span></summary>
+            <p>Completa el formulario de esta página. Se abrirá un correo con tu respuesta para que puedas enviárnosla.</p>
+          </details>
+          <details>
+            <summary>¿Puedo llevar acompañante?<span aria-hidden="true">+</span></summary>
+            <p>La invitación especifica el número de lugares reservados. Si tienes alguna duda, escríbenos al confirmar.</p>
+          </details>
+          <details>
+            <summary>¿Habrá opciones para necesidades alimentarias?<span aria-hidden="true">+</span></summary>
+            <p>Cuéntanos cualquier alergia o preferencia en el formulario de asistencia para tenerla en cuenta.</p>
+          </details>
+          <details>
+            <summary>¿A qué hora debería llegar?<span aria-hidden="true">+</span></summary>
+            <p>Los horarios de ceremonia y recepción se añadirán aquí cuando estén confirmados.</p>
+          </details>
+          <details>
+            <summary>¿Qué pasa si finalmente no puedo ir?<span aria-hidden="true">+</span></summary>
+            <p>Avísanos desde el formulario para poder organizarnos. Agradecemos mucho que nos lo hagas saber.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="rsvp" id="confirmar" aria-labelledby="rsvp-title">
+        <div class="rsvp-photo">
+          <img src={photos.dinner} alt="Una mesa preparada para una celebración entre amigos y familia" loading="lazy" />
+          <span class="rsvp-photo-caption">UNA MESA LARGA, MUCHAS HISTORIAS</span>
+        </div>
+        <div class="rsvp-panel">
+          <p class="eyebrow">NOS ENCANTARÍA VERTE</p>
+          <h2 id="rsvp-title">¿Vienes a<br />celebrar<span class="hero-period">?</span></h2>
+          <p class="rsvp-copy">Cuéntanos si nos acompañas. Nos hace mucha ilusión empezar a celebrar contigo.</p>
+          <form id="rsvp-form" class="rsvp-form" novalidate data-email={wedding.rsvpEmail} data-couple={wedding.names}>
+            <label for="guest-name">Tu nombre</label>
+            <input id="guest-name" name="name" type="text" autocomplete="name" placeholder="Nombre y apellido" required />
+            <span class="field-error" data-error="name"></span>
+            <label for="guest-attendance">¿Podrás acompañarnos?</label>
+            <select id="guest-attendance" name="attendance" required>
+              <option value="" selected disabled>Elige una opción</option>
+              <option value="Sí, allí estaré">Sí, allí estaré</option>
+              <option value="Esta vez no podré ir">Esta vez no podré ir</option>
+            </select>
+            <label for="guest-note">Alergias o un mensaje <span>(opcional)</span></label>
+            <textarea id="guest-note" name="note" rows="2" placeholder="Nos encantará leerte"></textarea>
+            <button class="button button-light" type="submit">Enviar mi respuesta <span aria-hidden="true">↗</span></button>
+            <p class="form-feedback" role="status" aria-live="polite"></p>
+            <small class="rsvp-deadline">{wedding.rsvpDeadline}</small>
+          </form>
+        </div>
+      </section>
+
+      <section class="closing section-pad" aria-label="Despedida">
+        <span class="closing-flower" aria-hidden="true">✳</span>
+        <p>El mejor regalo será compartir este día contigo.</p>
+        <strong>{wedding.names}</strong>
+        <span class="closing-date">{wedding.dateLabel}</span>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="footer-brand" href="#inicio">{wedding.names}<span> · CON TODO NUESTRO CARIÑO</span></a>
+      <a href="#inicio" class="back-top">Volver al comienzo ↑</a>
+      <span class="photo-credit">Fotografías de Unsplash</span>
+    </footer>
+
+    <script>
+      import '../scripts/page.ts';
+      import '../scripts/world.ts';
+    </script>
+  </body>
+</html>
