@@ -14,8 +14,8 @@ if (canvas && world) {
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 90);
     camera.position.set(0, 0.6, 6.7);
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'low-power' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.65));
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: window.innerWidth > 640, alpha: false, powerPreference: 'low-power' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth <= 640 ? 1.2 : 1.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.18;
@@ -155,7 +155,7 @@ if (canvas && world) {
       group.add(groundRing);
     });
 
-    const particleCount = window.matchMedia('(max-width: 640px)').matches ? 65 : 140;
+    const particleCount = window.matchMedia('(max-width: 640px)').matches ? 28 : 110;
     const particlePositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount; i += 1) {
       particlePositions[i * 3] = (Math.random() - 0.5) * 10;
@@ -171,18 +171,30 @@ if (canvas && world) {
     let targetProgress = 0;
     let currentProgress = 0;
     let scrollFrame = 0;
-    let isVisible = true;
+    let renderRequest = 0;
+    let isVisible = false;
+    let lastRenderedAt = 0;
     const startedAt = performance.now();
     let previousFrameAt = startedAt;
+    let frameInterval = window.innerWidth <= 640 ? 1000 / 30 : 1000 / 45;
+
+    function scheduleRender() {
+      if (!renderRequest) renderRequest = window.requestAnimationFrame(render);
+    }
 
     function resize() {
       if (!canvas || !renderer) return;
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
       if (!width || !height) return;
+      frameInterval = width <= 640 ? 1000 / 30 : 1000 / 45;
+      const pixelRatio = Math.min(window.devicePixelRatio, width <= 640 ? 1.2 : 1.5);
+      if (renderer.getPixelRatio() !== pixelRatio) renderer.setPixelRatio(pixelRatio);
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
-      camera.fov = width < 640 ? 47 : 42;
+      const horizontalFov = THREE.MathUtils.degToRad(68);
+      const verticalFov = 2 * Math.atan(Math.tan(horizontalFov / 2) / camera.aspect);
+      camera.fov = THREE.MathUtils.clamp(THREE.MathUtils.radToDeg(verticalFov), 38, 84);
       camera.updateProjectionMatrix();
     }
 
@@ -196,13 +208,20 @@ if (canvas && world) {
     }
 
     function requestScrollMeasure() {
+      if (reducedMotion) return;
       if (!scrollFrame) scrollFrame = window.requestAnimationFrame(measureScroll);
+      scheduleRender();
     }
 
     function render() {
-      if (!reducedMotion) window.requestAnimationFrame(render);
+      renderRequest = 0;
       if (!isVisible || document.hidden) return;
       const now = performance.now();
+      if (!reducedMotion && now - lastRenderedAt < frameInterval) {
+        scheduleRender();
+        return;
+      }
+      lastRenderedAt = now;
       const delta = Math.min((now - previousFrameAt) / 1000, 0.05);
       const elapsed = (now - startedAt) / 1000;
       previousFrameAt = now;
@@ -228,16 +247,20 @@ if (canvas && world) {
       });
       particles.rotation.y = reducedMotion ? 0 : elapsed * 0.008;
       renderer.render(scene, camera);
+      if (!reducedMotion) scheduleRender();
     }
 
-    new ResizeObserver(resize).observe(canvas);
-    new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; }).observe(worldSection);
+    new ResizeObserver(() => { resize(); scheduleRender(); }).observe(canvas);
+    new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) scheduleRender();
+    }).observe(worldSection);
     window.addEventListener('scroll', requestScrollMeasure, { passive: true });
-    window.addEventListener('resize', resize, { passive: true });
-    document.addEventListener('visibilitychange', () => { if (!document.hidden && isVisible) window.requestAnimationFrame(render); });
+    window.addEventListener('resize', () => { resize(); scheduleRender(); }, { passive: true });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && isVisible) scheduleRender(); });
     resize();
     measureScroll();
-    render();
+    scheduleRender();
   } catch (error) {
     console.warn('El jardín 3D no pudo iniciarse en este dispositivo.', error);
     canvas.classList.add('world-fallback');
