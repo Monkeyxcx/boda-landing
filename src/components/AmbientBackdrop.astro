@@ -1,6 +1,56 @@
 <div class="ambient-backdrop" aria-hidden="true">
-  <span class="lava-blob lava-blob--rose"></span>
-  <span class="lava-blob lava-blob--blush"></span>
-  <span class="lava-blob lava-blob--ivory"></span>
-  <span class="lava-blob lava-blob--peach"></span>
+  <svg class="ambient-lava" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" focusable="false">
+    <defs>
+      <filter id="pastel-goo" x="-18%" y="-18%" width="136%" height="136%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="11" result="soft-blobs" />
+        <feColorMatrix
+          in="soft-blobs"
+          mode="matrix"
+          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -8"
+          result="liquid-shape"
+        />
+        <feBlend in="SourceGraphic" in2="liquid-shape" mode="normal" />
+      </filter>
+      <radialGradient id="lava-rose">
+        <stop offset="0%" stop-color="#e9a2b7" stop-opacity=".88" />
+        <stop offset="54%" stop-color="#efbac7" stop-opacity=".78" />
+        <stop offset="82%" stop-color="#f5d9dc" stop-opacity=".38" />
+        <stop offset="100%" stop-color="#f5d9dc" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="lava-blush">
+        <stop offset="0%" stop-color="#f0b8c6" stop-opacity=".82" />
+        <stop offset="58%" stop-color="#f6d2d5" stop-opacity=".64" />
+        <stop offset="100%" stop-color="#f6d2d5" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="lava-ivory">
+        <stop offset="0%" stop-color="#fffdf7" stop-opacity=".98" />
+        <stop offset="62%" stop-color="#fffaf0" stop-opacity=".8" />
+        <stop offset="100%" stop-color="#fffaf0" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="lava-peach">
+        <stop offset="0%" stop-color="#efc2b3" stop-opacity=".74" />
+        <stop offset="60%" stop-color="#f5ded2" stop-opacity=".58" />
+        <stop offset="100%" stop-color="#f5ded2" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+
+    <g class="lava-group lava-group--rose" filter="url(#pastel-goo)">
+      <ellipse cx="310" cy="285" rx="190" ry="155" fill="url(#lava-rose)" />
+      <ellipse cx="420" cy="345" rx="112" ry="92" fill="url(#lava-rose)" />
+      <ellipse cx="238" cy="205" rx="96" ry="84" fill="url(#lava-rose)" />
+    </g>
+    <g class="lava-group lava-group--blush" filter="url(#pastel-goo)">
+      <ellipse cx="704" cy="352" rx="198" ry="150" fill="url(#lava-blush)" />
+      <ellipse cx="590" cy="405" rx="122" ry="92" fill="url(#lava-blush)" />
+      <ellipse cx="790" cy="270" rx="91" ry="82" fill="url(#lava-blush)" />
+    </g>
+    <g class="lava-group lava-group--ivory" filter="url(#pastel-goo)">
+      <ellipse cx="435" cy="743" rx="220" ry="164" fill="url(#lava-ivory)" />
+      <ellipse cx="575" cy="690" rx="128" ry="102" fill="url(#lava-ivory)" />
+    </g>
+    <g class="lava-group lava-group--peach" filter="url(#pastel-goo)">
+      <ellipse cx="770" cy="795" rx="167" ry="130" fill="url(#lava-peach)" />
+      <ellipse cx="672" cy="724" rx="105" ry="82" fill="url(#lava-peach)" />
+    </g>
+  </svg>
 </div>
