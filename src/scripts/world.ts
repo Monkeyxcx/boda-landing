@@ -12,7 +12,7 @@ if (canvas && world) {
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 18);
     camera.position.set(0, 0.6, 6.7);
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: window.innerWidth > 640, alpha: true, powerPreference: 'low-power' });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'low-power', failIfMajorPerformanceCaveat: false });
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth <= 640 ? 1.2 : 1.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -246,9 +246,15 @@ if (canvas && world) {
       });
       particles.rotation.y = reducedMotion ? 0 : elapsed * 0.008;
       renderer.render(scene, camera);
+      worldSection.classList.add('has-webgl');
       if (!reducedMotion) scheduleRender();
     }
 
+    canvas.addEventListener('webglcontextlost', (event) => {
+      event.preventDefault();
+      worldSection.classList.remove('has-webgl');
+    });
+    canvas.addEventListener('webglcontextrestored', scheduleRender);
     new ResizeObserver(() => { resize(); scheduleRender(); }).observe(canvas);
     new IntersectionObserver(([entry]) => {
       isVisible = entry.isIntersecting;
@@ -262,6 +268,7 @@ if (canvas && world) {
     scheduleRender();
   } catch (error) {
     console.warn('El jardín 3D no pudo iniciarse en este dispositivo.', error);
+    world.classList.remove('has-webgl');
     canvas.classList.add('world-fallback');
   }
 }
