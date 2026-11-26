@@ -1,12 +1,45 @@
-const revealObserver = new IntersectionObserver((entries, observer) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    entry.target.classList.add('is-visible');
-    observer.unobserve(entry.target);
-  });
-}, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+const reduceScrollMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const focusTargets = Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
 
-document.querySelectorAll<HTMLElement>('.reveal').forEach((item) => revealObserver.observe(item));
+if (focusTargets.length && !reduceScrollMotion) {
+  let focusFrame = 0;
+
+  const updateFocus = () => {
+    focusFrame = 0;
+    const viewportHeight = window.innerHeight;
+    const viewportCenter = viewportHeight * 0.5;
+    const updates = focusTargets.map((target) => {
+      const rect = target.getBoundingClientRect();
+      const targetCenter = rect.top + rect.height * 0.5;
+      const focusRange = viewportHeight * 0.58 + Math.min(rect.height * 0.18, viewportHeight * 0.2);
+      const distance = Math.abs(viewportCenter - targetCenter);
+      const proximity = Math.max(0, Math.min(1, 1 - distance / focusRange));
+      const progress = proximity * proximity * (3 - 2 * proximity);
+      const visibleProgress = target.matches(':focus-within') ? 1 : progress;
+
+      return {
+        target,
+        opacity: visibleProgress.toFixed(3),
+        scale: (0.94 + visibleProgress * 0.06).toFixed(3),
+      };
+    });
+
+    updates.forEach(({ target, opacity, scale }) => {
+      target.style.setProperty('--scroll-focus-opacity', opacity);
+      target.style.setProperty('--scroll-focus-scale', scale);
+    });
+    document.documentElement.classList.add('scroll-focus-enabled');
+  };
+
+  const scheduleFocusUpdate = () => {
+    if (!focusFrame) focusFrame = window.requestAnimationFrame(updateFocus);
+  };
+
+  window.addEventListener('scroll', scheduleFocusUpdate, { passive: true });
+  window.addEventListener('resize', scheduleFocusUpdate, { passive: true });
+  document.addEventListener('focusin', scheduleFocusUpdate);
+  updateFocus();
+}
 
 const wordHeading = document.querySelector<HTMLElement>('.word-reveal');
 if (wordHeading && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

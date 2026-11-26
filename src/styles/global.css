@@ -221,8 +221,8 @@ img { display: block; width: 100%; }
 .back-top:hover { color: var(--clay); }
 .photo-credit { text-align: right; }
 
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 750ms var(--curve), transform 750ms var(--curve); }
-.reveal.is-visible { opacity: 1; transform: translateY(0); }
+.reveal { opacity: 1; transform: none; }
+html.scroll-focus-enabled .reveal { opacity: var(--scroll-focus-opacity, 0); transform: scale(var(--scroll-focus-scale, .94)); transform-origin: center; }
 .not-found-page { min-height: 100svh; }
 .not-found { display: flex; min-height: 100svh; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; text-align: center; }
 .not-found > span { margin-bottom: 27px; color: var(--clay); font-size: 33px; }
