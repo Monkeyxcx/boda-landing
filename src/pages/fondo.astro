@@ -1,0 +1,81 @@
+---
+import '../styles/global.css';
+import AmbientBackdrop from '../components/AmbientBackdrop.astro';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f8f5ef" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Vista de prueba del fondo | Nuestra boda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="ambient-preview-page" data-lava-intensity="bold">
+    <AmbientBackdrop />
+
+    <header class="ambient-preview-toolbar">
+      <a class="ambient-preview-back" href="/">← Volver a la invitación</a>
+      <nav class="ambient-preview-controls" aria-label="Controles de la vista previa">
+        <span class="ambient-preview-label">VISTA DEL FONDO</span>
+        <button class="ambient-preview-button" type="button" data-intensity="soft" aria-pressed="false">Suave</button>
+        <button class="ambient-preview-button" type="button" data-intensity="bold" aria-pressed="true">Intenso</button>
+        <button class="ambient-preview-button" type="button" data-motion-toggle aria-pressed="true">Pausar</button>
+      </nav>
+    </header>
+
+    <main class="ambient-preview-main">
+      <section class="ambient-preview-scene ambient-preview-scene-one" aria-labelledby="preview-title">
+        <p class="eyebrow"><span class="eyebrow-line"></span> UNA ATMÓSFERA QUE NOS ACOMPAÑA</p>
+        <h1 id="preview-title">Rosa que flota.<br />Marfil que respira.</h1>
+        <p class="ambient-preview-copy">Un mismo cielo pastel, suave y continuo, a lo largo de toda la historia.</p>
+        <a class="ambient-preview-scroll" href="#segunda-escena">Desplázate para ver la continuidad <span aria-hidden="true">↓</span></a>
+      </section>
+      <section class="ambient-preview-scene ambient-preview-scene-two" id="segunda-escena" aria-label="Continuidad del fondo al desplazarse">
+        <span class="ambient-preview-index">02 / EL MISMO FONDO</span>
+        <p class="ambient-preview-statement">Las formas se encuentran,<br />se mezclan y siguen su camino.</p>
+        <a class="ambient-preview-scroll" href="#tercera-escena">Continuar <span aria-hidden="true">↓</span></a>
+      </section>
+      <section class="ambient-preview-scene ambient-preview-scene-three" id="tercera-escena" aria-label="Controles de intensidad y movimiento">
+        <span class="ambient-preview-index">03 / AJUSTA EL MOVIMIENTO</span>
+        <p class="ambient-preview-statement">Elige la intensidad arriba.<br />La invitación usará el mismo fondo.</p>
+        <a class="button button-dark" href="/">Volver a la invitación <span aria-hidden="true">↗</span></a>
+      </section>
+    </main>
+
+    <script>
+      const previewBody = document.body;
+      const motionButton = document.querySelector<HTMLButtonElement>('[data-motion-toggle]');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reducedMotion) {
+        previewBody.classList.add('ambient-paused');
+        if (motionButton) {
+          motionButton.textContent = 'Reproducir';
+          motionButton.setAttribute('aria-pressed', 'false');
+        }
+      }
+
+      document.querySelectorAll<HTMLButtonElement>('[data-intensity]').forEach((button) => {
+        button.addEventListener('click', () => {
+          previewBody.dataset.lavaIntensity = button.dataset.intensity;
+          document.querySelectorAll('[data-intensity]').forEach((control) => {
+            control.setAttribute('aria-pressed', String(control === button));
+          });
+        });
+      });
+
+      motionButton?.addEventListener('click', () => {
+        const paused = previewBody.classList.toggle('ambient-paused');
+        if (reducedMotion && !paused) previewBody.classList.add('preview-motion-enabled');
+        if (paused) previewBody.classList.remove('preview-motion-enabled');
+        motionButton.textContent = paused ? 'Reproducir' : 'Pausar';
+        motionButton.setAttribute('aria-pressed', String(!paused));
+      });
+    </script>
+  </body>
+</html>

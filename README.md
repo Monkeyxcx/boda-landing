@@ -37,6 +37,8 @@ La dirección visual sigue un enfoque editorial cálido: tonos marfil, verde jar
 
 La interfaz contempla móviles estrechos, tabletas, pantallas anchas y orientación horizontal; las fotografías se encuadran con relaciones de aspecto específicas para cada disposición.
 
+Para revisar y comparar el fondo animado de forma aislada, abre `/fondo` en el servidor local. La vista permite alternar entre intensidad suave e intensa, además de pausar y reanudar el movimiento.
+
 ## Publicación
 
 Astro genera una web estática en `dist/`. Antes del despliegue, actualiza el dominio en `astro.config.mjs` para que los metadatos y enlaces sociales correspondan al sitio final.
