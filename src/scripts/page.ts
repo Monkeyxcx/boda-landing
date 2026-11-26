@@ -19,8 +19,8 @@ if (focusTargets.length && !reduceScrollMotion) {
 
       return {
         target,
-        opacity: visibleProgress.toFixed(3),
-        scale: (0.94 + visibleProgress * 0.06).toFixed(3),
+        opacity: (0.5 + visibleProgress * 0.5).toFixed(3),
+        scale: (0.5 + visibleProgress * 0.5).toFixed(3),
       };
     });
 
