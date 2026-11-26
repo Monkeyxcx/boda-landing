@@ -9,7 +9,6 @@
           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -8"
           result="liquid-shape"
         />
-        <feBlend in="SourceGraphic" in2="liquid-shape" mode="normal" />
       </filter>
       <radialGradient id="lava-rose">
         <stop offset="0%" stop-color="#e9a2b7" stop-opacity=".88" />
@@ -34,25 +33,33 @@
       </radialGradient>
     </defs>
 
-    <g class="lava-group lava-group--rose" filter="url(#pastel-goo)">
-      <ellipse cx="310" cy="285" rx="190" ry="155" fill="url(#lava-rose)" />
-      <ellipse cx="420" cy="345" rx="112" ry="92" fill="url(#lava-rose)" />
-      <ellipse cx="238" cy="205" rx="96" ry="84" fill="url(#lava-rose)" />
-      <ellipse class="lava-drop lava-drop--slow" cx="305" cy="418" rx="29" ry="35" fill="url(#lava-rose)" />
-      <ellipse class="lava-drop lava-drop--quick" cx="362" cy="405" rx="18" ry="25" fill="url(#lava-rose)" />
+    <g class="lava-motion lava-motion--rose">
+      <g class="lava-goo" filter="url(#pastel-goo)">
+        <ellipse cx="310" cy="285" rx="190" ry="155" fill="url(#lava-rose)" />
+        <ellipse cx="420" cy="345" rx="112" ry="92" fill="url(#lava-rose)" />
+        <ellipse cx="238" cy="205" rx="96" ry="84" fill="url(#lava-rose)" />
+      </g>
+      <ellipse class="lava-drop lava-drop--slow" cx="305" cy="423" rx="105" ry="78" fill="url(#lava-rose)" />
+      <ellipse class="lava-drop lava-drop--quick" cx="398" cy="405" rx="66" ry="48" fill="url(#lava-rose)" />
     </g>
-    <g class="lava-group lava-group--blush" filter="url(#pastel-goo)">
-      <ellipse cx="704" cy="352" rx="198" ry="150" fill="url(#lava-blush)" />
-      <ellipse cx="590" cy="405" rx="122" ry="92" fill="url(#lava-blush)" />
-      <ellipse cx="790" cy="270" rx="91" ry="82" fill="url(#lava-blush)" />
+    <g class="lava-motion lava-motion--blush">
+      <g class="lava-goo" filter="url(#pastel-goo)">
+        <ellipse cx="704" cy="352" rx="198" ry="150" fill="url(#lava-blush)" />
+        <ellipse cx="590" cy="405" rx="122" ry="92" fill="url(#lava-blush)" />
+        <ellipse cx="790" cy="270" rx="91" ry="82" fill="url(#lava-blush)" />
+      </g>
     </g>
-    <g class="lava-group lava-group--ivory" filter="url(#pastel-goo)">
-      <ellipse cx="435" cy="743" rx="220" ry="164" fill="url(#lava-ivory)" />
-      <ellipse cx="575" cy="690" rx="128" ry="102" fill="url(#lava-ivory)" />
+    <g class="lava-motion lava-motion--ivory">
+      <g class="lava-goo" filter="url(#pastel-goo)">
+        <ellipse cx="435" cy="743" rx="220" ry="164" fill="url(#lava-ivory)" />
+        <ellipse cx="575" cy="690" rx="128" ry="102" fill="url(#lava-ivory)" />
+      </g>
     </g>
-    <g class="lava-group lava-group--peach" filter="url(#pastel-goo)">
-      <ellipse cx="770" cy="795" rx="167" ry="130" fill="url(#lava-peach)" />
-      <ellipse cx="672" cy="724" rx="105" ry="82" fill="url(#lava-peach)" />
+    <g class="lava-motion lava-motion--peach">
+      <g class="lava-goo" filter="url(#pastel-goo)">
+        <ellipse cx="770" cy="795" rx="167" ry="130" fill="url(#lava-peach)" />
+        <ellipse cx="672" cy="724" rx="105" ry="82" fill="url(#lava-peach)" />
+      </g>
     </g>
   </svg>
 </div>
