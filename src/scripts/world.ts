@@ -8,13 +8,12 @@ if (canvas && world) {
   try {
     const worldSection = world;
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#ece9e0');
-    scene.fog = new THREE.Fog('#ece9e0', 17, 41);
 
-    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 90);
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 18);
     camera.position.set(0, 0.6, 6.7);
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: window.innerWidth > 640, alpha: false, powerPreference: 'low-power' });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: window.innerWidth > 640, alpha: true, powerPreference: 'low-power' });
+    renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth <= 640 ? 1.2 : 1.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
