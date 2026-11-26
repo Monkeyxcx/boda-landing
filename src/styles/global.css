@@ -30,11 +30,12 @@ img { display: block; width: 100%; }
 
 .ambient-backdrop { position: fixed; z-index: -1; inset: 0; overflow: hidden; background: #f8f5ef; pointer-events: none; }
 .ambient-lava { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.lava-corners { pointer-events: none; }
 .lava-motion { transform-box: fill-box; transform-origin: center; will-change: transform; }
-.lava-motion--rose { animation: lava-rise-rose 23s cubic-bezier(.45, 0, .55, 1) infinite alternate; }
-.lava-motion--blush { animation: lava-rise-blush 28s cubic-bezier(.45, 0, .55, 1) infinite alternate; }
-.lava-motion--ivory { animation: lava-rise-ivory 31s cubic-bezier(.45, 0, .55, 1) infinite alternate; }
-.lava-motion--peach { animation: lava-rise-peach 25s cubic-bezier(.45, 0, .55, 1) infinite alternate; }
+.lava-motion--rose { animation: lava-rise-rose 5.75s cubic-bezier(.45, 0, .55, 1) infinite alternate; }
+.lava-motion--blush { animation: lava-rise-blush 7s cubic-bezier(.45, 0, .55, 1) infinite alternate; }
+.lava-motion--ivory { animation: lava-rise-ivory 7.75s cubic-bezier(.45, 0, .55, 1) infinite alternate; }
+.lava-motion--peach { animation: lava-rise-peach 6.25s cubic-bezier(.45, 0, .55, 1) infinite alternate; }
 @keyframes lava-rise-rose { from { transform: translate3d(-3%, 25%, 0) scale(.94, 1.04) rotate(-9deg); } to { transform: translate3d(4%, -27%, 0) scale(1.08, .96) rotate(8deg); } }
 @keyframes lava-rise-blush { from { transform: translate3d(4%, 26%, 0) scale(1.04, .95) rotate(8deg); } to { transform: translate3d(-4%, -26%, 0) scale(.95, 1.08) rotate(-9deg); } }
 @keyframes lava-rise-ivory { from { transform: translate3d(-4%, -24%, 0) scale(.96, .95) rotate(6deg); } to { transform: translate3d(4%, 24%, 0) scale(1.08, 1.06) rotate(-7deg); } }
