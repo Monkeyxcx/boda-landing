@@ -16,6 +16,16 @@ npm run build
 npm run preview
 ```
 
+Comprobaciones automáticas:
+
+```sh
+npm run check
+npx playwright install chromium
+npm run test:e2e
+```
+
+Las pruebas Playwright revisan el desplazamiento del contenido, el menú, el RSVP y el desbordamiento en varios tamaños móviles. El módulo Three.js se carga cuando la sección del jardín se aproxima al viewport.
+
 ## Personalizar antes de publicar
 
 Edita `src/config.ts`:
@@ -25,9 +35,10 @@ Edita `src/config.ts`:
 - `dateISO`: fecha y hora para la cuenta regresiva y el calendario, por ejemplo `2027-06-14T16:00:00-06:00`.
 - `venue` y `address`: lugar y dirección. El enlace del mapa usa estos datos.
 - `rsvpEmail`: correo que recibirá las confirmaciones. Si queda vacío, el formulario explica cómo configurarlo.
+- `rsvpEndpoint`: endpoint HTTPS de Formspree para enviar RSVP desde la página. Si ambos campos de RSVP quedan vacíos, no se envían datos a ningún servicio.
 - `photos`: imágenes de referencia; se pueden sustituir por fotografías propias.
 
-Los valores iniciales de nombres, fecha, lugar y correo son marcadores de posición. El formulario abre el programa de correo de cada invitado; no almacena ni envía información a un servidor.
+Los valores iniciales de nombres, fecha, lugar y correo son marcadores de posición. Sin endpoint, el RSVP solo abre el correo configurado. Si conectas un proveedor de formularios, añade también el aviso de privacidad apropiado para tus invitados.
 
 Las fotografías de referencia vienen de [Unsplash](https://unsplash.com/license) y la galería 3D está guardada en `public/images/wedding-gallery/`. Para publicar, conviene reemplazarlas por fotografías de la pareja.
 

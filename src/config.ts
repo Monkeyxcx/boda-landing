@@ -6,6 +6,7 @@ export const wedding = {
   venue: 'LUGAR POR CONFIRMAR',
   address: '',
   rsvpEmail: '',
+  rsvpEndpoint: '', // Endpoint HTTPS de Formspree; vacío = formulario sin envío externo.
   rsvpDeadline: 'Confirma antes de la fecha indicada en tu invitación',
   instagram: '',
 };

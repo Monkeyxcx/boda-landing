@@ -137,23 +137,75 @@ document.querySelector<HTMLButtonElement>('[data-calendar]')?.addEventListener('
 });
 
 const rsvpForm = document.querySelector<HTMLFormElement>('#rsvp-form');
-rsvpForm?.addEventListener('submit', (event) => {
+rsvpForm?.addEventListener('submit', async (event) => {
   event.preventDefault();
   const feedback = rsvpForm.querySelector<HTMLElement>('.form-feedback');
   const name = (rsvpForm.elements.namedItem('name') as HTMLInputElement).value.trim();
   const attendance = (rsvpForm.elements.namedItem('attendance') as HTMLSelectElement).value;
   const note = (rsvpForm.elements.namedItem('note') as HTMLTextAreaElement).value.trim();
+  const honeypot = rsvpForm.elements.namedItem('_gotcha') as HTMLInputElement | null;
   const nameError = rsvpForm.querySelector<HTMLElement>('[data-error="name"]');
   if (nameError) nameError.textContent = name ? '' : 'Escribe tu nombre para continuar.';
   if (!feedback) return;
+  if (honeypot?.value.trim()) {
+    feedback.textContent = 'No se pudo procesar la respuesta.';
+    return;
+  }
   if (!name || !attendance) {
     feedback.textContent = !name ? 'Revisa tu nombre y vuelve a intentarlo.' : 'Elige si podrás acompañarnos.';
     if (!name) (rsvpForm.elements.namedItem('name') as HTMLInputElement).focus();
+    else (rsvpForm.elements.namedItem('attendance') as HTMLSelectElement).focus();
     return;
   }
+
+  const endpoint = rsvpForm.dataset.endpoint?.trim();
+  if (endpoint) {
+    const submitButton = rsvpForm.querySelector<HTMLButtonElement>('button[type="submit"]');
+    let destination: URL;
+    try {
+      destination = new URL(endpoint);
+    } catch {
+      feedback.textContent = 'El endpoint de confirmación no es válido. Revisa src/config.ts.';
+      return;
+    }
+    if (destination.protocol !== 'https:') {
+      feedback.textContent = 'El endpoint de confirmación debe usar HTTPS.';
+      return;
+    }
+
+    const couple = rsvpForm.dataset.couple || 'Nuestra boda';
+    const formData = new FormData(rsvpForm);
+    formData.set('_subject', `RSVP para ${couple}`);
+    formData.set('Pareja', couple);
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.setAttribute('aria-busy', 'true');
+    }
+    feedback.textContent = 'Enviando tu respuesta…';
+    try {
+      const response = await fetch(destination, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formData,
+      });
+      if (!response.ok) throw new Error(`RSVP endpoint responded ${response.status}`);
+      feedback.textContent = 'Gracias. Recibimos tu respuesta.';
+      rsvpForm.reset();
+    } catch (error) {
+      console.error('No se pudo enviar el RSVP.', error);
+      feedback.textContent = 'No se pudo enviar. Revisa tu conexión e inténtalo de nuevo.';
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.removeAttribute('aria-busy');
+      }
+    }
+    return;
+  }
+
   const email = rsvpForm.dataset.email?.trim();
   if (!email) {
-    feedback.textContent = 'La invitación está lista para personalizarse. Añade el correo de confirmación en src/config.ts.';
+    feedback.textContent = 'Añade rsvpEndpoint o rsvpEmail en src/config.ts para recibir confirmaciones.';
     return;
   }
   const couple = rsvpForm.dataset.couple || 'Nuestra boda';

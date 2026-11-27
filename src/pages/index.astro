@@ -264,10 +264,14 @@ const description = `Nos casamos. Acompáñanos a celebrar nuestra historia el $
           <p class="eyebrow">NOS ENCANTARÍA VERTE</p>
           <h2 id="rsvp-title">¿Vienes a<br />celebrar<span class="hero-period">?</span></h2>
           <p class="rsvp-copy">Cuéntanos si nos acompañas. Nos hace mucha ilusión empezar a celebrar contigo.</p>
-          <form id="rsvp-form" class="rsvp-form" novalidate data-email={wedding.rsvpEmail} data-couple={wedding.names}>
+          <form id="rsvp-form" class="rsvp-form" novalidate data-email={wedding.rsvpEmail} data-endpoint={wedding.rsvpEndpoint} data-couple={wedding.names}>
             <label for="guest-name">Tu nombre</label>
             <input id="guest-name" name="name" type="text" autocomplete="name" placeholder="Nombre y apellido" required />
             <span class="field-error" data-error="name"></span>
+            <div class="form-honeypot" aria-hidden="true">
+              <label for="guest-company">Deja este campo vacío</label>
+              <input id="guest-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+            </div>
             <label for="guest-attendance">¿Podrás acompañarnos?</label>
             <select id="guest-attendance" name="attendance" required>
               <option value="" selected disabled>Elige una opción</option>
