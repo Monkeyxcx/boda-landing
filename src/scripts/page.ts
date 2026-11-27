@@ -85,19 +85,21 @@ if (photoRing && photoRingTrack && ringAnimation && photoRingItems.length > 0) {
   const wrapTime = (time: number, length: number) => ((time % length) + length) % length;
   const currentTime = (length = duration()) => wrapTime(Number(rotation.currentTime ?? 0), length);
 
-  function updateCenteredItem(time = currentTime()) {
-    const angle = time / duration() * 360;
-    const nearestIndex = Math.round(-angle / stepAngle);
-    const centeredIndex = (nearestIndex % photoRingItems.length + photoRingItems.length) % photoRingItems.length;
-    const correction = -(angle + nearestIndex * stepAngle);
-
+  function setCenteredItem(centeredIndex: number) {
     photoRingItems.forEach((item, index) => {
       const centered = index === centeredIndex;
       item.classList.toggle('is-centered', centered);
-      if (centered) item.style.setProperty('--front-correction', `${correction}deg`);
-      else item.style.removeProperty('--front-correction');
+      item.style.removeProperty('--front-correction');
     });
     if (ringStatus) ringStatus.textContent = `Fotografía ${centeredIndex + 1} de ${photoRingItems.length}`;
+  }
+
+  function clearCenteredItem() {
+    photoRingItems.forEach((item) => {
+      item.classList.remove('is-centered');
+      item.style.removeProperty('--front-correction');
+    });
+    if (ringStatus) ringStatus.textContent = `Carrusel de ${photoRingItems.length} fotografías`;
   }
 
   function animateToTime(target: number, done: () => void) {
@@ -111,7 +113,6 @@ if (photoRing && photoRingTrack && ringAnimation && photoRingItems.length > 0) {
     rotation.pause();
     if (ringMotionReduced || Math.abs(delta) < .001) {
       rotation.currentTime = end;
-      updateCenteredItem(end);
       done();
       return;
     }
@@ -125,11 +126,9 @@ if (photoRing && photoRingTrack && ringAnimation && photoRingItems.length > 0) {
       const eased = progress * progress * (3 - 2 * progress);
       const time = wrapTime(start + delta * eased, length);
       rotation.currentTime = time;
-      updateCenteredItem(time);
       if (progress < 1) window.requestAnimationFrame(tick);
       else {
         rotation.currentTime = end;
-        updateCenteredItem(end);
         done();
       }
     };
@@ -149,11 +148,15 @@ if (photoRing && photoRingTrack && ringAnimation && photoRingItems.length > 0) {
   }
 
   function selectPhoto(index: number) {
-    const targetAngle = ((-index * stepAngle) % 360 + 360) % 360;
+    const centeredIndex = (index % photoRingItems.length + photoRingItems.length) % photoRingItems.length;
+    const targetAngle = ((-centeredIndex * stepAngle) % 360 + 360) % 360;
     const targetTime = targetAngle / 360 * duration();
     window.clearTimeout(resumeTimer);
     seekGeneration += 1;
-    animateToTime(targetTime, scheduleAutoResume);
+    animateToTime(targetTime, () => {
+      setCenteredItem(centeredIndex);
+      scheduleAutoResume();
+    });
   }
 
   ringElement.addEventListener('keydown', (event) => {
@@ -184,6 +187,7 @@ if (photoRing && photoRingTrack && ringAnimation && photoRingItems.length > 0) {
     seekGeneration += 1;
     rotation.pause();
     ringElement.classList.add('is-dragging');
+    clearCenteredItem();
     drag = { pointerId: event.pointerId, startX: event.clientX, startTime: currentTime(), itemIndex, moved: false };
     ringElement.setPointerCapture(event.pointerId);
   });
@@ -196,7 +200,6 @@ if (photoRing && photoRingTrack && ringAnimation && photoRingItems.length > 0) {
     const length = duration();
     const time = wrapTime(drag.startTime + (deltaX * .55 / 360) * length, length);
     rotation.currentTime = time;
-    updateCenteredItem(time);
   });
 
   function finishDrag(event: PointerEvent, cancelled = false) {

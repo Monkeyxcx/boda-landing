@@ -8,6 +8,7 @@ test('la invitación carga el fondo SVG, la galería y el contenido principal', 
   await expect(page.locator('.ambient-lava .lava-motion')).toHaveCount(4);
   await expect(page.locator('.ambient-lava .lava-drop')).toHaveCount(0);
   await expect(page.locator('.photo-ring-item')).toHaveCount(10);
+  await expect(page.locator('[data-ring-step]')).toHaveCount(0);
 });
 
 test('el módulo Three.js se descarga al acercarse a la historia, no al abrir la página', async ({ page }) => {
