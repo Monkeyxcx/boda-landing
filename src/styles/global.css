@@ -97,10 +97,6 @@ img { display: block; width: 100%; }
 .photo-ring-item.is-centered { z-index: 2; transform: rotateY(calc((var(--position) - 1) * 36deg + var(--front-correction, 0deg))) translateZ(var(--ring-radius)) scale(1.05); }
 .photo-ring-item img { width: 100%; height: 100%; object-fit: cover; background: #d6d1c5; pointer-events: none; user-select: none; -webkit-user-drag: none; }
 @keyframes wedding-ring { from { transform: perspective(1400px) rotateY(0deg); } to { transform: perspective(1400px) rotateY(360deg); } }
-.photo-ring-controls { position: absolute; z-index: 5; top: calc(8% + 135px); right: var(--page-gutter); left: var(--page-gutter); display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
-.photo-ring-controls button { display: grid; width: 44px; height: 44px; place-items: center; padding: 0 0 3px; border: 1px solid rgb(37 59 51 / 20%); border-radius: 50%; background: rgb(248 245 239 / 92%); color: var(--green); cursor: pointer; font-size: 26px; line-height: 1; pointer-events: auto; touch-action: manipulation; transition: background 250ms var(--curve), transform 300ms var(--curve); }
-.photo-ring-controls button:hover { transform: scale(1.06); background: #fffdf8; }
-.photo-ring-controls button:active { transform: scale(.94); }
 .photo-ring-title-wrap { position: absolute; z-index: 3; right: 0; bottom: 5.5%; left: 0; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
 .photo-ring-title { position: relative; margin: 0; color: #294b40; font-size: clamp(70px, 13.5vw, 180px); font-weight: 700; letter-spacing: -.095em; line-height: .86; text-align: center; white-space: nowrap; }
 .photo-ring-title::after { position: absolute; inset: 0; z-index: 2; color: transparent; -webkit-text-stroke: 1.5px #f8f5ef; content: attr(data-content); }
@@ -247,7 +243,6 @@ html.scroll-focus-enabled .reveal { opacity: var(--scroll-focus-opacity, .5); tr
   .photo-ring-section { min-height: 680px; }
   .photo-ring { top: 10%; width: 155px; height: 210px; }
   .photo-ring { --ring-radius: 330px; }
-  .photo-ring-controls { top: calc(10% + 105px); }
   .photo-ring-title { font-size: clamp(70px, 14vw, 128px); }
   .chapter-card { width: min(410px, 54vw); }
   .faq { gap: 7%; }
@@ -303,8 +298,6 @@ html.scroll-focus-enabled .reveal { opacity: var(--scroll-focus-opacity, .5); tr
   .photo-ring { top: 13%; width: 100px; height: 145px; perspective: 800px; }
   .photo-ring-track { animation-duration: 46s; }
   .photo-ring { --ring-radius: 205px; }
-  .photo-ring-controls { top: calc(13% + 72px); right: 12px; left: 12px; }
-  .photo-ring-controls button { width: 40px; height: 40px; }
   .photo-ring-title-wrap { bottom: 10%; }
   .photo-ring-title { font-size: clamp(42px, 12.6vw, 88px); letter-spacing: -.09em; }
   .photo-ring-title::after { -webkit-text-stroke-width: 1px; }
@@ -415,7 +408,6 @@ html.scroll-focus-enabled .reveal { opacity: var(--scroll-focus-opacity, .5); tr
   .photo-ring-section { height: clamp(390px, 130svh, 600px); min-height: 390px; }
   .photo-ring { top: 58px; width: 92px; height: 128px; }
   .photo-ring { --ring-radius: 185px; }
-  .photo-ring-controls { top: 122px; right: 12px; left: 12px; }
   .photo-ring-title { font-size: clamp(44px, 9vw, 92px); }
   .intro { min-height: 430px; padding-top: 60px; padding-bottom: 60px; }
   .world-stage { height: 100svh; min-height: 300px; margin-bottom: -100svh; }

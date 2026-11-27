@@ -156,14 +156,21 @@ if (photoRing && photoRingTrack && ringAnimation && photoRingItems.length > 0) {
     animateToTime(targetTime, scheduleAutoResume);
   }
 
-  document.querySelectorAll<HTMLButtonElement>('[data-ring-step]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const direction = Number(button.dataset.ringStep);
-      if (!Number.isFinite(direction) || direction === 0) return;
+  ringElement.addEventListener('keydown', (event) => {
+    const direction = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+    if (direction) {
+      event.preventDefault();
       const angle = currentTime() / duration() * 360;
       const active = (Math.round(-angle / stepAngle) % photoRingItems.length + photoRingItems.length) % photoRingItems.length;
       selectPhoto((active + direction + photoRingItems.length) % photoRingItems.length);
-    });
+      return;
+    }
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      const angle = currentTime() / duration() * 360;
+      const active = (Math.round(-angle / stepAngle) % photoRingItems.length + photoRingItems.length) % photoRingItems.length;
+      selectPhoto(active);
+    }
   });
 
   ringElement.addEventListener('pointerdown', (event) => {

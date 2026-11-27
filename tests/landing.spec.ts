@@ -52,14 +52,15 @@ test('el contenido alcanza opacidad y escala completas en el centro y vuelve a a
   await expect.poll(() => card.evaluate((element) => Number.parseFloat(getComputedStyle(element).getPropertyValue('--scroll-focus-scale')))).toBeLessThan(.56);
 });
 
-test('el carrusel se puede seleccionar con flechas y girar arrastrando', async ({ page }) => {
+test('el carrusel se puede controlar con teclado y girar arrastrando', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
-  const nextButton = page.getByRole('button', { name: 'Foto siguiente' });
+  const ring = page.locator('.photo-ring');
   const status = page.locator('[data-ring-status]');
-  await nextButton.scrollIntoViewIfNeeded();
-  await nextButton.click();
+  await ring.scrollIntoViewIfNeeded();
+  await ring.focus();
+  await page.keyboard.press('ArrowRight');
   await expect(page.locator('.photo-ring-item.is-centered')).toHaveCount(1);
   const beforeDrag = await status.textContent();
 
