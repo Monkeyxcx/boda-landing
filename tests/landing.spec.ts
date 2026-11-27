@@ -117,6 +117,44 @@ test('el menú móvil y la validación de RSVP funcionan sin enviar datos extern
   await expect(page.locator('.form-feedback')).toContainText('Añade rsvpEndpoint o rsvpEmail');
 });
 
+test('el RSVP envía los datos solo al endpoint configurado y confirma el éxito', async ({ page }) => {
+  let submittedData = '';
+  await page.route('https://rsvp.example.test/submit', async (route) => {
+    const request = route.request();
+    const corsHeaders = {
+      'access-control-allow-origin': '*',
+      'access-control-allow-methods': 'POST, OPTIONS',
+      'access-control-allow-headers': 'accept, content-type',
+    };
+
+    if (request.method() === 'OPTIONS') {
+      await route.fulfill({ status: 204, headers: corsHeaders });
+      return;
+    }
+    submittedData = request.postData() ?? '';
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      headers: corsHeaders,
+      body: '{"ok":true}',
+    });
+  });
+
+  await page.goto('/');
+  await page.locator('#rsvp-form').evaluate((form) => {
+    (form as HTMLFormElement).dataset.endpoint = 'https://rsvp.example.test/submit';
+  });
+  await page.locator('#guest-name').fill('Invitada de prueba');
+  await page.locator('#guest-attendance').selectOption('Sí, allí estaré');
+  await page.locator('#guest-note').fill('Opción sin gluten');
+  await page.locator('#rsvp-form button[type="submit"]').click();
+
+  await expect(page.locator('.form-feedback')).toHaveText('Gracias. Recibimos tu respuesta.');
+  expect(submittedData).toContain('Invitada de prueba');
+  expect(submittedData).toContain('Opción sin gluten');
+  await expect(page.locator('#guest-name')).toHaveValue('');
+});
+
 test('el movimiento reducido deja el contenido totalmente visible', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
