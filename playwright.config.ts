@@ -8,13 +8,13 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   reporter: 'list',
   use: {
-    baseURL: 'http://127.0.0.1:4322',
+    baseURL: 'http://127.0.0.1:4321',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
   webServer: {
-    command: 'node node_modules/astro/bin/astro.mjs dev --host 127.0.0.1 --port 4322',
-    url: 'http://127.0.0.1:4322',
+    command: 'npm run dev',
+    url: 'http://127.0.0.1:4321',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },
