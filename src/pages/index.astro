@@ -74,16 +74,21 @@ const description = `Nos casamos. Acompáñanos a celebrar nuestra historia el $
         <div class="photo-ring-grid" aria-hidden="true"></div>
         <div class="photo-ring-meta reveal">
           <p><span class="ring-spark">✳</span> NUESTROS RECUERDOS FAVORITOS</p>
-          <span>UN AMOR QUE SIGUE GIRANDO</span>
+          <span>DESLIZA PARA GIRAR</span>
         </div>
         <div class="photo-ring" aria-hidden="true">
           <div class="photo-ring-track" style={`--quantity: ${photos.gallery.length}`}>
             {photos.gallery.map((photo, index) => (
               <figure class="photo-ring-item" style={`--position: ${index + 1}`}>
-                <img src={photo} alt="" loading="lazy" width="600" height="800" />
+                <img src={photo} alt="" loading="lazy" draggable="false" width="600" height="800" />
               </figure>
             ))}
           </div>
+        </div>
+        <div class="photo-ring-controls" role="group" aria-label="Mover las fotografías">
+          <button type="button" data-ring-step="-1" aria-label="Foto anterior">‹</button>
+          <span class="visually-hidden" data-ring-status aria-live="polite">Fotografía 1 de {photos.gallery.length}</span>
+          <button type="button" data-ring-step="1" aria-label="Foto siguiente">›</button>
         </div>
         <div class="photo-ring-title-wrap reveal">
           <p class="ring-side-note">DOS CAMINOS<br />UNA HISTORIA</p>

@@ -52,6 +52,32 @@ test('el contenido alcanza opacidad y escala completas en el centro y vuelve a a
   await expect.poll(() => card.evaluate((element) => Number.parseFloat(getComputedStyle(element).getPropertyValue('--scroll-focus-scale')))).toBeLessThan(.56);
 });
 
+test('el carrusel se puede seleccionar con flechas y girar arrastrando', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const nextButton = page.getByRole('button', { name: 'Foto siguiente' });
+  const status = page.locator('[data-ring-status]');
+  await nextButton.scrollIntoViewIfNeeded();
+  await nextButton.click();
+  await expect(page.locator('.photo-ring-item.is-centered')).toHaveCount(1);
+  const beforeDrag = await status.textContent();
+
+  const centeredPhoto = page.locator('.photo-ring-item.is-centered');
+  const bounds = await centeredPhoto.boundingBox();
+  expect(bounds).not.toBeNull();
+  if (!bounds) return;
+
+  const x = bounds.x + bounds.width / 2;
+  const y = bounds.y + bounds.height / 2;
+  await page.mouse.move(x, y);
+  await page.mouse.down();
+  await page.mouse.move(x - 120, y, { steps: 6 });
+  await page.mouse.up();
+  await expect.poll(() => status.textContent()).not.toBe(beforeDrag);
+  await expect(page.locator('.photo-ring-item.is-centered')).toHaveCount(1);
+});
+
 test('la página no desborda en móviles, tabletas ni orientación horizontal', async ({ page }) => {
   const viewports = [
     { width: 320, height: 568 },

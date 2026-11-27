@@ -42,6 +42,7 @@ img { display: block; width: 100%; }
 @keyframes lava-rise-peach { from { transform: translate3d(4%, -23%, 0) scale(.96, 1.06) rotate(-8deg); } to { transform: translate3d(-4%, 25%, 0) scale(1.07, .95) rotate(9deg); } }
 .skip-link { position: fixed; z-index: 100; top: 12px; left: 12px; padding: 12px 16px; transform: translateY(-160%); border-radius: 6px; background: var(--ink); color: white; transition: transform 500ms var(--curve); }
 .skip-link:focus { transform: translateY(0); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .site-header { position: absolute; z-index: 20; top: 22px; left: 50%; display: flex; width: min(1320px, calc(100% - 44px)); height: 70px; align-items: center; justify-content: space-between; padding: 0 22px; transform: translateX(-50%); border: 1px solid rgb(37 59 51 / 8%); border-radius: 8px; background: rgb(247 244 237 / 88%); box-shadow: 0 12px 44px rgb(38 45 34 / 7%); backdrop-filter: blur(18px); }
 .brand { display: inline-flex; align-items: center; gap: 12px; }
 .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 50%; background: var(--green); color: var(--paper); font-size: 14px; font-weight: 600; letter-spacing: -1px; }
@@ -89,11 +90,17 @@ img { display: block; width: 100%; }
 .photo-ring-meta { position: absolute; z-index: 4; top: 32px; right: var(--page-gutter); left: var(--page-gutter); display: flex; align-items: center; justify-content: space-between; color: #697168; font-size: 8px; font-weight: 700; letter-spacing: .17em; }
 .photo-ring-meta p { display: flex; align-items: center; gap: 10px; margin: 0; }
 .ring-spark { color: var(--clay); font-size: 17px; }
-.photo-ring { position: absolute; top: 8%; left: 50%; width: 200px; height: 270px; transform: translateX(-50%); perspective: 1400px; }
+.photo-ring { --ring-radius: 430px; position: absolute; top: 8%; left: 50%; width: 200px; height: 270px; transform: translateX(-50%); perspective: 1400px; cursor: grab; touch-action: pan-y; user-select: none; }
+.photo-ring.is-dragging { cursor: grabbing; }
 .photo-ring-track { position: absolute; inset: 0; transform-style: preserve-3d; animation: wedding-ring 38s linear infinite; }
-.photo-ring-item { position: absolute; inset: 0; margin: 0; padding: 6px; aspect-ratio: 3 / 4; transform: rotateY(calc((var(--position) - 1) * 36deg)) translateZ(430px); border: 1px solid rgb(37 59 51 / 20%); background: #f7f4ed; box-shadow: 0 14px 45px rgb(31 43 34 / 14%); backface-visibility: hidden; }
-.photo-ring-item img { width: 100%; height: 100%; object-fit: cover; background: #d6d1c5; }
-@keyframes wedding-ring { from { transform: perspective(1400px) rotateX(-13deg) rotateY(0deg); } to { transform: perspective(1400px) rotateX(-13deg) rotateY(360deg); } }
+.photo-ring-item { position: absolute; inset: 0; margin: 0; padding: 6px; aspect-ratio: 3 / 4; transform: rotateY(calc((var(--position) - 1) * 36deg)) translateZ(var(--ring-radius)); border: 1px solid rgb(37 59 51 / 20%); background: #f7f4ed; box-shadow: 0 14px 45px rgb(31 43 34 / 14%); backface-visibility: hidden; touch-action: pan-y; user-select: none; transition: transform 240ms var(--curve); }
+.photo-ring-item.is-centered { z-index: 2; transform: rotateY(calc((var(--position) - 1) * 36deg + var(--front-correction, 0deg))) translateZ(var(--ring-radius)) scale(1.05); }
+.photo-ring-item img { width: 100%; height: 100%; object-fit: cover; background: #d6d1c5; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+@keyframes wedding-ring { from { transform: perspective(1400px) rotateY(0deg); } to { transform: perspective(1400px) rotateY(360deg); } }
+.photo-ring-controls { position: absolute; z-index: 5; top: calc(8% + 135px); right: var(--page-gutter); left: var(--page-gutter); display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+.photo-ring-controls button { display: grid; width: 44px; height: 44px; place-items: center; padding: 0 0 3px; border: 1px solid rgb(37 59 51 / 20%); border-radius: 50%; background: rgb(248 245 239 / 92%); color: var(--green); cursor: pointer; font-size: 26px; line-height: 1; pointer-events: auto; touch-action: manipulation; transition: background 250ms var(--curve), transform 300ms var(--curve); }
+.photo-ring-controls button:hover { transform: scale(1.06); background: #fffdf8; }
+.photo-ring-controls button:active { transform: scale(.94); }
 .photo-ring-title-wrap { position: absolute; z-index: 3; right: 0; bottom: 5.5%; left: 0; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
 .photo-ring-title { position: relative; margin: 0; color: #294b40; font-size: clamp(70px, 13.5vw, 180px); font-weight: 700; letter-spacing: -.095em; line-height: .86; text-align: center; white-space: nowrap; }
 .photo-ring-title::after { position: absolute; inset: 0; z-index: 2; color: transparent; -webkit-text-stroke: 1.5px #f8f5ef; content: attr(data-content); }
@@ -102,10 +109,6 @@ img { display: block; width: 100%; }
 .ring-bottom-note span { color: var(--clay); font-size: 13px; }
 .photo-ring-counter { position: absolute; z-index: 4; bottom: 30px; left: var(--page-gutter); display: flex; align-items: center; gap: 9px; color: #697168; font-size: 8px; font-weight: 700; letter-spacing: .14em; }
 .photo-ring-counter i { width: 32px; height: 1px; background: #9d9d91; }
-@media (hover: hover) and (pointer: fine) {
-  .photo-ring:hover .photo-ring-track { animation-play-state: paused; }
-}
-
 .section-pad { padding-right: var(--page-gutter); padding-left: var(--page-gutter); }
 .intro { position: relative; display: flex; min-height: 680px; flex-direction: column; justify-content: center; padding-top: 100px; padding-bottom: 105px; overflow: hidden; text-align: center; }
 .intro-top { display: flex; align-items: center; justify-content: center; gap: 16px; }
@@ -243,7 +246,8 @@ html.scroll-focus-enabled .reveal { opacity: var(--scroll-focus-opacity, .5); tr
   .hero-date { flex-wrap: wrap; margin-top: 36px; }
   .photo-ring-section { min-height: 680px; }
   .photo-ring { top: 10%; width: 155px; height: 210px; }
-  .photo-ring-item { transform: rotateY(calc((var(--position) - 1) * 36deg)) translateZ(330px); }
+  .photo-ring { --ring-radius: 330px; }
+  .photo-ring-controls { top: calc(10% + 105px); }
   .photo-ring-title { font-size: clamp(70px, 14vw, 128px); }
   .chapter-card { width: min(410px, 54vw); }
   .faq { gap: 7%; }
@@ -298,7 +302,9 @@ html.scroll-focus-enabled .reveal { opacity: var(--scroll-focus-opacity, .5); tr
   .photo-ring-meta > span { max-width: 100px; text-align: right; }
   .photo-ring { top: 13%; width: 100px; height: 145px; perspective: 800px; }
   .photo-ring-track { animation-duration: 46s; }
-  .photo-ring-item { padding: 4px; transform: rotateY(calc((var(--position) - 1) * 36deg)) translateZ(205px); }
+  .photo-ring { --ring-radius: 205px; }
+  .photo-ring-controls { top: calc(13% + 72px); right: 12px; left: 12px; }
+  .photo-ring-controls button { width: 40px; height: 40px; }
   .photo-ring-title-wrap { bottom: 10%; }
   .photo-ring-title { font-size: clamp(42px, 12.6vw, 88px); letter-spacing: -.09em; }
   .photo-ring-title::after { -webkit-text-stroke-width: 1px; }
@@ -408,7 +414,8 @@ html.scroll-focus-enabled .reveal { opacity: var(--scroll-focus-opacity, .5); tr
   .hero-photo-wrap { grid-row: auto; width: 100%; height: min(76svh, 390px); min-height: 210px; max-height: none; margin: 0; aspect-ratio: 4 / 3; }
   .photo-ring-section { height: clamp(390px, 130svh, 600px); min-height: 390px; }
   .photo-ring { top: 58px; width: 92px; height: 128px; }
-  .photo-ring-item { transform: rotateY(calc((var(--position) - 1) * 36deg)) translateZ(185px); }
+  .photo-ring { --ring-radius: 185px; }
+  .photo-ring-controls { top: 122px; right: 12px; left: 12px; }
   .photo-ring-title { font-size: clamp(44px, 9vw, 92px); }
   .intro { min-height: 430px; padding-top: 60px; padding-bottom: 60px; }
   .world-stage { height: 100svh; min-height: 300px; margin-bottom: -100svh; }
